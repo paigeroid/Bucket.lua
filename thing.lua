@@ -3,8 +3,6 @@
 	Bucket.lua
 	@paigeroid
 
-    UNFINISHED
-
 ]]
 
 
@@ -61,6 +59,27 @@ end
 
 
 
+--< Update >--
+function Bucket:Update()
+	local count = 1
+    for i, v in pairs(self) do
+        local key
+        
+        if type(v.Key) == "number" and v.Key == i+1 then
+            key = v.Key-1
+        else
+            key = v.Key
+        end
+        
+        self[count] = { Key = key, Value = v.Value }
+        
+        count = count + 1
+        
+    end
+end
+
+
+
 --< Push >--
 function Bucket:Push(Entry)
 	local index = self:Length() + 1
@@ -79,7 +98,8 @@ function Bucket:Push(Entry)
         }
     end
     
-    return table.insert(self, index, stuff)
+    table.insert(self, index, stuff)
+    self:Update()
 end
 
 
@@ -100,7 +120,30 @@ function Bucket:Pull(Entry)
         }
     end
     
-    return table.insert(self, 1, stuff)
+    table.insert(self, 1, stuff)
+    self:Update()
+end
+
+
+
+--< Insert >--
+function Bucket:Insert(Index, Entry)
+    if type(Entry) == "table" then
+        for Key, Value in pairs(Entry) do
+            stuff = {
+                Key = Key,
+                Value = Value
+            }
+        end
+    else
+        stuff = {
+            Key = Index,
+            Value = Entry
+        }
+    end
+    
+    table.insert(self, Index, stuff)
+    self:Update()
 end
 
 
@@ -110,6 +153,19 @@ function Bucket:Get(str)
     for i, v in pairs(self) do
         if v.Key == str then
             return v.Value
+        end
+    end
+    
+    return nil
+end
+
+
+
+--< GetEntry >--
+function Bucket:Get(str)
+    for i, v in pairs(self) do
+        if v.Key == str then
+            return v
         end
     end
     
@@ -136,6 +192,19 @@ function Bucket:KeyAt(index)
     for i, v in pairs(self) do
         if i == index then
             return v.Key
+        end
+    end
+
+    return nil
+end
+
+
+
+--< EntryAt >--
+function Bucket:EntryAt(index)
+    for i, v in pairs(self) do
+        if i == index then
+            return v
         end
     end
 
@@ -235,61 +304,42 @@ end
 
 --< Del >--
 function Bucket:Del(Key)
-	local at = 0
     for i, v in pairs(self) do
         if v.Key == Key then
-            print("a")
             table.remove(self, i)
-            at = i
             break
         end
     end
 
-    
-    local count = 1
+    self:Update()
+end
+
+
+
+--< DelVal >--
+function Bucket:DelVal(Value)
     for i, v in pairs(self) do
-        local key
-        
-        if type(v.Key) == "number" and v.Key == i+1 then
-            key = v.Key-1
-        else
-            key = v.Key
+        if v.Value == Value then
+            table.remove(self, i)
+            break
         end
-        
-        self[count] = { Key = key, Value = v.Value }
-        
-        count = count + 1
     end
+
+    self:Update()
 end
 
 
 
 --< DelAt >--
 function Bucket:DelAt(Index)
-    local at = 0
     for i, v in pairs(self) do
         if i == Index then
             table.remove(self, Index)
-            at = Index
             break
         end
     end
-
     
-    local count = 1
-    for i, v in pairs(self) do
-        local key
-        
-        if type(v.Key) == "number" and v.Key == i+1 then
-            key = v.Key-1
-        else
-            key = v.Key
-        end
-        
-        self[count] = { Key = key, Value = v.Value }
-        
-        count = count + 1
-    end
+    self:Update()
 end
 
 
@@ -420,6 +470,46 @@ end
 
 
 
+--< Scoop >--
+function Bucket:Scoop(act)
+	-- if it's a function
+	if type(act) == "function" then
+		for i, v in pairs(self) do
+			if act(v.Key, v.Value, i) then
+		    	self:DelAt(i)
+			end
+		end
+		
+	-- if it's a table of numbers and stuff
+	elseif type(act) == "table" then
+		for i, v in pairs(act) do
+			self:Del(v)
+		end
+	end
+end
+
+
+
+--< ScoopVal >--
+function Bucket:ScoopVal(act)
+	-- if it's a function
+	if type(act) == "function" then
+		for i, v in pairs(self) do
+			if act(v.Key, v.Value, i) then
+		    	self:DelAt(i)
+			end
+		end
+		
+	-- if it's a table of numbers and stuff
+	elseif type(act) == "table" then
+		for i, v in pairs(act) do
+			self:DelVal(v)
+		end
+	end
+end
+
+
+
 local bkt = Bucket.new({
     "a",
     "b",
@@ -437,13 +527,6 @@ local bkt = Bucket.new({
 
 print(bkt)
 
-bkt:Del("key")
-
---[[
-bkt:Filter(function(k, v, i)
-    return type(v) ~= "string"
-end)
-]]
+bkt:ScoopVal({ "a", "c", 1 })
 
 print(bkt)
-
