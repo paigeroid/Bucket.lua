@@ -386,7 +386,7 @@ end
 
 --< tostring >--
 function Bucket:__tostring()
-	local thing = "{"
+	local thing = "(("
 	
 	self:ForEach(function(k, v, i)
 		
@@ -417,7 +417,7 @@ function Bucket:__tostring()
 		
 	end)
 	
-	thing = thing.." }"
+	thing = thing.." ))"
 	
 	return thing
 end
@@ -508,25 +508,4 @@ function Bucket:ScoopVal(act)
 	end
 end
 
-
-
-local bkt = Bucket.new({
-    "a",
-    "b",
-    "c",
-    
-    1,
-    
-    { key = "value" },
-    
-    {
-        "a",
-        "b"
-    }
-})
-
-print(bkt)
-
-bkt:ScoopVal({ "a", "c", 1 })
-
-print(bkt)
+return Bucket
