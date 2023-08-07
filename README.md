@@ -3,6 +3,8 @@
 A recreation of my Node.JS Stews package in Lua<br>
 I'm too lazy to make actual documentation so look below
 
+<br>
+
 ---
 
 > ## Bucket.new()
