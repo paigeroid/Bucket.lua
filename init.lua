@@ -59,14 +59,35 @@ end
 
 
 
---< Update >--
-function Bucket:Update()
+--< UpdUp >--
+function Bucket:UpdUp()
 	local count = 1
     for i, v in pairs(self) do
         local key
         
         if type(v.Key) == "number" and v.Key == i+1 then
             key = v.Key-1
+        else
+            key = v.Key
+        end
+        
+        self[count] = { Key = key, Value = v.Value }
+        
+        count = count + 1
+        
+    end
+end
+
+
+
+--< UpdDown >--
+function Bucket:UpdDown()
+	local count = 1
+    for i, v in pairs(self) do
+        local key
+        
+        if type(v.Key) == "number" and v.Key == i-1 then
+            key = v.Key+1
         else
             key = v.Key
         end
@@ -99,7 +120,7 @@ function Bucket:Push(Entry)
     end
     
     table.insert(self, index, stuff)
-    self:Update()
+    self:UpdUp()
 end
 
 
@@ -121,7 +142,7 @@ function Bucket:Pull(Entry)
     end
     
     table.insert(self, 1, stuff)
-    self:Update()
+    self:UpdDown()
 end
 
 
@@ -143,7 +164,7 @@ function Bucket:Insert(Index, Entry)
     end
     
     table.insert(self, Index, stuff)
-    self:Update()
+    self:UpdUp()
 end
 
 
@@ -153,19 +174,6 @@ function Bucket:Get(str)
     for i, v in pairs(self) do
         if v.Key == str then
             return v.Value
-        end
-    end
-    
-    return nil
-end
-
-
-
---< GetEntry >--
-function Bucket:Get(str)
-    for i, v in pairs(self) do
-        if v.Key == str then
-            return v
         end
     end
     
@@ -311,7 +319,18 @@ function Bucket:Del(Key)
         end
     end
 
-    self:Update()
+    self:UpdUp()
+end
+
+
+--< DelDNU >--
+function Bucket:DelDNU(Key)
+    for i, v in pairs(self) do
+        if v.Key == Key then
+            table.remove(self, i)
+            break
+        end
+    end
 end
 
 
@@ -325,7 +344,19 @@ function Bucket:DelVal(Value)
         end
     end
 
-    self:Update()
+    self:UpdUp()
+end
+
+
+
+--< DelValDNU >--
+function Bucket:DelValDNU(Value)
+    for i, v in pairs(self) do
+        if v.Value == Value then
+            table.remove(self, i)
+            break
+        end
+    end
 end
 
 
@@ -339,7 +370,19 @@ function Bucket:DelAt(Index)
         end
     end
     
-    self:Update()
+    self:UpdUp()
+end
+
+
+
+--< DelAtDNU >--
+function Bucket:DelAtDNU(Index)
+    for i, v in pairs(self) do
+        if i == Index then
+            table.remove(self, Index)
+            break
+        end
+    end
 end
 
 
@@ -357,7 +400,7 @@ end
 --< Shift >--
 function Bucket:Shift(Offset)
 	if not Offset then Offset = 0 end
-	local index = 0 + Offset
+	local index = 1 + Offset
 	
 	return self:DelAt(index)
 end
@@ -369,17 +412,6 @@ function Bucket:ForEach(func)
 	for i, v in pairs(self) do
 		func(v.Key, v.Value, i)
 	end
-end
-
-
-
---< Filter >--
-function Bucket:Filter(func)
-	for i, v in pairs(self) do
-		if not func(v.Key, v.Value, i) then
-		    self:DelAt(i)
-		end
-    end
 end
 
 
@@ -404,7 +436,7 @@ function Bucket:__tostring()
 		
 		-- if it's a table
 		if k ~= i then
-			thing = thing.." [ "..k.." = "..value.." ]"
+			thing = thing.." [ "..k.."::"..value.." ]"
 		
 		-- if it's just a normal thing
 		else
@@ -452,7 +484,7 @@ function Bucket:Join(joiner)
 		
 		-- if it's a table
 		if k ~= i then
-			thing = thing..k.." = "..value
+			thing = thing..k.."::"..value
 		
 		-- if it's just a normal thing
 		else
@@ -466,46 +498,6 @@ function Bucket:Join(joiner)
 	end)
 	
 	return thing
-end
-
-
-
---< Scoop >--
-function Bucket:Scoop(act)
-	-- if it's a function
-	if type(act) == "function" then
-		for i, v in pairs(self) do
-			if act(v.Key, v.Value, i) then
-		    	self:DelAt(i)
-			end
-		end
-		
-	-- if it's a table of numbers and stuff
-	elseif type(act) == "table" then
-		for i, v in pairs(act) do
-			self:Del(v)
-		end
-	end
-end
-
-
-
---< ScoopVal >--
-function Bucket:ScoopVal(act)
-	-- if it's a function
-	if type(act) == "function" then
-		for i, v in pairs(self) do
-			if act(v.Key, v.Value, i) then
-		    	self:DelAt(i)
-			end
-		end
-		
-	-- if it's a table of numbers and stuff
-	elseif type(act) == "table" then
-		for i, v in pairs(act) do
-			self:DelVal(v)
-		end
-	end
 end
 
 return Bucket
