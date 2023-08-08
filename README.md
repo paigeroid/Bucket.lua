@@ -358,7 +358,7 @@ this is because interally most of it is set up like this:
 
 <br>
 
-> ## Bucket:DelVal()
+> ## Bucket:DelValDNU()
 > - desc: deletes the entry of a value without updating keys
 > - returns: None
 > - args: Value: `Object`
