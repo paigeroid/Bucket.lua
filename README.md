@@ -18,7 +18,7 @@ local bucket = Bucket.new({
     "string", -- string
     123, -- number
 
-    { key = "val" } -- pair
+    { key = "val" }, -- pair
 
     {
         "a", "b", "c" -- table
