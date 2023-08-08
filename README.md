@@ -49,7 +49,8 @@ on top of this there are a few main things for each entry
 - Index
 - Type
   
-the key value and type can be found included in the actual entries and in things like ForEach while the index is usually only gotten through functions
+the key value and type can be found included in the actual entries and in things like ForEach<br>
+the index is usually only gotten through functions
 ```lua
 bucket:ForEach(function(Key, Value, Index, Type)
     -- stuff
