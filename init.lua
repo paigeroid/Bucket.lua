@@ -286,6 +286,23 @@ end
 
 
 
+--< FirstEntry >--
+function Bucket:FirstEntry(Offset)
+	if not Offset then Offset = 0 end
+    
+    local index = 1 + Offset
+    
+    for i, v in pairs(self) do
+    	if i == index then
+    		return v
+    	end
+    end
+    
+    return nil
+end
+
+
+
 --< Last >--
 function Bucket:Last(Offset)
 	if not Offset then Offset = 0 end
@@ -312,6 +329,23 @@ function Bucket:LastKey(Offset)
     for i, v in pairs(self) do
     	if i == index then
     		return v.Key
+    	end
+    end
+    
+    return nil
+end
+
+
+
+--< LastEntry >--
+function Bucket:LastEntry(Offset)
+	if not Offset then Offset = 0 end
+    
+    local index = self:Length() - Offset
+    
+    for i, v in pairs(self) do
+    	if i == index then
+    		return v
     	end
     end
     
