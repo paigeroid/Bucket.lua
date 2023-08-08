@@ -69,6 +69,8 @@ bkt:IndexOf("a") -- 1
 
 bkt:IndexOf("b") -- 2
 ```
+for string stuff there's a unique syntax for it:
+- (( )) =
 
 
 
