@@ -30,21 +30,24 @@ function Bucket.new(array)
 			if string.sub(str,1,string.len("(("))=="((" then
 				stuff = {
 	    	        Key = i,
-	    	        Value = v
+	    	        Value = v,
+	    	        Type = "uni"
 	    	    }
     	    
 			elseif type(v) == "table" and vl == 1 then
     	        for Key, Value in pairs(v) do
     	            stuff = {
     	                Key = Key,
-    	                Value = Value
+    	                Value = Value,
+    	                Type = "pair"
     	            }
 					break
     	        end
     	    else
     	        stuff = {
     	            Key = i,
-    	            Value = v
+    	            Value = v,
+    	            Type = "uni"
     	        }
     	    end
     	    
@@ -68,40 +71,19 @@ end
 
 
 
---< UpdUp >--
-function Bucket:UpdUp()
+--< Update >--
+function Bucket:Update()
 	local count = 1
     for i, v in pairs(self) do
         local key
         
-        if type(v.Key) == "number" and v.Key == i+1 then
-            key = v.Key-1
+        if type(v.Key) == "number" and v.Key ~= i and v.Type == "uni" then
+            key = i
         else
             key = v.Key
         end
         
-        self[count] = { Key = key, Value = v.Value }
-        
-        count = count + 1
-        
-    end
-end
-
-
-
---< UpdDown >--
-function Bucket:UpdDown()
-	local count = 1
-    for i, v in pairs(self) do
-        local key
-        
-        if type(v.Key) == "number" and v.Key == i-1 then
-            key = v.Key+1
-        else
-            key = v.Key
-        end
-        
-        self[count] = { Key = key, Value = v.Value }
+        self[count] = { Key = key, Value = v.Value, Type = v.Type }
         
         count = count + 1
         
@@ -121,18 +103,20 @@ function Bucket:Push(Entry)
         for Key, Value in pairs(Entry) do
             stuff = {
                 Key = Key,
-                Value = Value
+                Value = Value,
+                Type = "pair"
             }
         end
     else
         stuff = {
             Key = index,
-            Value = Entry
+            Value = Entry,
+            Type = "uni"
         }
     end
     
     table.insert(self, index, stuff)
-    self:UpdUp()
+    self:Update()
 end
 
 
@@ -146,18 +130,20 @@ function Bucket:Pull(Entry)
         for Key, Value in pairs(Entry) do
             stuff = {
                 Key = Key,
-                Value = Value
+                Value = Value,
+                Type = "pair"
             }
         end
     else
         stuff = {
             Key = 1,
-            Value = Entry
+            Value = Entry,
+            Type = "uni"
         }
     end
     
     table.insert(self, 1, stuff)
-    self:UpdDown()
+    self:Update()
 end
 
 
@@ -171,18 +157,20 @@ function Bucket:Append(Index, Entry)
         for Key, Value in pairs(Entry) do
             stuff = {
                 Key = Key,
-                Value = Value
+                Value = Value,
+                Type = "pair"
             }
         end
     else
         stuff = {
             Key = Index,
-            Value = Entry
+            Value = Entry,
+            Type = "uni"
         }
     end
     
     table.insert(self, Index, stuff)
-    self:UpdUp()
+    self:Update()
 end
 
 
@@ -190,8 +178,33 @@ end
 --< Get >--
 function Bucket:Get(str)
     for i, v in pairs(self) do
-        if v.Key == str then
-            return v.Value
+        if v.Type == "pair" then
+        	if v.Key == str then
+            	return v.Value
+        	end
+        else
+        	if v.Value == str then
+        		return v.Value
+        	end
+        end
+    end
+    
+    return nil
+end
+
+
+
+--< GetType >--
+function Bucket:GetType(str)
+    for i, v in pairs(self) do
+    	if v.Type == "pair" then
+        	if v.Key == str then
+            	return v.Type
+        	end
+        else
+        	if v.Value == str then
+        		return v.Type
+        	end
         end
     end
     
@@ -203,8 +216,14 @@ end
 --< GetEntry >--
 function Bucket:GetEntry(str)
     for i, v in pairs(self) do
-        if v.Key == str then
-            return v
+        if v.Type == "pair" then
+        	if v.Key == str then
+            	return v
+        	end
+        else
+        	if v.Value == str then
+        		return v
+        	end
         end
     end
     
@@ -231,6 +250,19 @@ function Bucket:KeyAt(index)
     for i, v in pairs(self) do
         if i == index then
             return v.Key
+        end
+    end
+
+    return nil
+end
+
+
+
+--< TypeAt >--
+function Bucket:TypeAt(index)
+    for i, v in pairs(self) do
+        if i == index then
+            return v.Type
         end
     end
 
@@ -278,6 +310,23 @@ function Bucket:FirstKey(Offset)
     for i, v in pairs(self) do
     	if i == index then
     		return v.Key
+    	end
+    end
+    
+    return nil
+end
+
+
+
+--< FirstType >--
+function Bucket:FirstType(Offset)
+	if not Offset then Offset = 0 end
+    
+    local index = 1 + Offset
+    
+    for i, v in pairs(self) do
+    	if i == index then
+    		return v.Type
     	end
     end
     
@@ -337,6 +386,23 @@ end
 
 
 
+--< LastType >--
+function Bucket:LastType(Offset)
+	if not Offset then Offset = 0 end
+    
+    local index = self:Length() - Offset
+    
+    for i, v in pairs(self) do
+    	if i == index then
+    		return v.Type
+    	end
+    end
+    
+    return nil
+end
+
+
+
 --< LastEntry >--
 function Bucket:LastEntry(Offset)
 	if not Offset then Offset = 0 end
@@ -357,9 +423,16 @@ end
 --< Set >--
 function Bucket:Set(Key, Value)
 	for i, v in pairs(self) do
-		if v.Key == Key then
-			self[i].Value = Value
-			return
+		if v.Type == "pair" then
+			if v.Key == Key then
+				self[i].Value = Value
+				return
+			end
+		else
+			if v.Value == Key then
+				self[i].Value = Value
+				return
+			end
 		end
 	end
 end
@@ -378,23 +451,37 @@ end
 --< Del >--
 function Bucket:Del(Key)
     for i, v in pairs(self) do
-        if v.Key == Key then
-            table.remove(self, i)
-            break
-        end
+    	if v.Type == "pair" then
+	        if v.Key == Key then
+	            table.remove(self, i)
+	            break
+	        end
+	    else
+	    	if v.Value == Key then
+	            table.remove(self, i)
+	            break
+	        end
+		end
     end
 
-    self:UpdUp()
+    self:Update()
 end
 
 
 --< DelDNU >--
 function Bucket:DelDNU(Key)
     for i, v in pairs(self) do
-        if v.Key == Key then
-            table.remove(self, i)
-            break
-        end
+    	if v.Type == "pair" then
+	        if v.Key == Key then
+	            table.remove(self, i)
+	            break
+	        end
+	    else
+	    	if v.Value == Key then
+	            table.remove(self, i)
+	            break
+	        end
+		end
     end
 end
 
@@ -409,7 +496,7 @@ function Bucket:DelVal(Value)
         end
     end
 
-    self:UpdUp()
+    self:Update()
 end
 
 
@@ -435,7 +522,7 @@ function Bucket:DelAt(Index)
         end
     end
     
-    self:UpdUp()
+    self:Update()
 end
 
 
@@ -475,7 +562,7 @@ end
 --< ForEach >--
 function Bucket:ForEach(func)
 	for i, v in pairs(self) do
-		func(v.Key, v.Value, i)
+		func(v.Key, v.Value, i, v.Type)
 	end
 end
 
@@ -485,7 +572,7 @@ end
 function Bucket:__tostring()
 	local thing = "(("
 	
-	self:ForEach(function(k, v, i)
+	self:ForEach(function(k, v, i, t)
 
 		local str = tostring(v)
 		local value
@@ -498,24 +585,24 @@ function Bucket:__tostring()
 		elseif type(v) == "string" then
 		    value = '"'..tostring(v)..'"'
 		
-		-- if it's a table	
+		-- if it's a table
 		elseif type(v) == "table" then
 		    local vl = 0
 	        for _ in pairs(v) do vl = vl + 1 end
 	        
 		    value = '{ Table ('..vl.."x) }"
 		
-		-- if it's none of those	
+		-- if it's none of those
 		else
 		    value = tostring(v)
 		end
 		
 		-- if it's a pair
-		if k ~= i then
+		if t == "pair" then
 			thing = thing.." [ *"..k.." => "..value.." ]"
 		
 		-- if it's just a normal entry
-		else			
+		else
 			thing = thing.." "..value
 		end
 		
@@ -548,7 +635,7 @@ function Bucket:Join(joiner)
 		
 	local thing = ""
 	
-	self:ForEach(function(k, v, i)
+	self:ForEach(function(k, v, i, t)
 		
 		local value
 		local str = tostring(v)
@@ -564,13 +651,13 @@ function Bucket:Join(joiner)
 	        
 		    value = 'Table ('..vl.."x)"
 		
-		-- if it's none of those	
+		-- if it's none of those
 		else
 		    value = tostring(v)
 		end
 		
 		-- if it's a pair
-		if k ~= i then
+		if t == "pair" then
 			thing = thing.."*"..k.." => "..value
 		
 		-- if it's just a normal entry
@@ -591,7 +678,7 @@ end
 --< Every >--
 function Bucket:Every(func)
 	for i, v in pairs(self) do
-		if not func(v.Key, v.Value, i) then
+		if not func(v.Key, v.Value, i, v.Type) then
 			return false
 		end
 	end
@@ -604,7 +691,7 @@ end
 --< Some >--
 function Bucket:Some(func)
 	for i, v in pairs(self) do
-		if func(v.Key, v.Value, i) then
+		if func(v.Key, v.Value, i, v.Type) then
 			return true
 		end
 	end
@@ -643,8 +730,14 @@ end
 --< IndexOf >--
 function Bucket:IndexOf(Key)
 	for i, v in pairs(self) do
-		if v.Key == Key then
-			return i
+		if v.Type == "pair" then
+			if v.Key == Key then
+				return i
+			end
+		else
+			if v.Value == Key then
+				return i
+			end
 		end
 	end
 
@@ -671,8 +764,14 @@ function Bucket:LastIndexOf(Key)
 	for i = self:Length(), 1, -1 do
 		local v = self[i]
 		
-		if v.Key == Key then
-			return i
+		if v.Type == "pair" then
+			if v.Key == Key then
+				return i
+			end
+		else
+			if v.Value == Key then
+				return i
+			end
 		end
 	end
 
@@ -700,8 +799,14 @@ end
 function Bucket:Has(...)
 	for i0, v0 in ipairs(arg) do
 		for i1, v1 in pairs(self) do
-			if v1.Key == v0 then
-				return true
+			if v1.Type == "pair" then
+				if v1.Key == v0 then
+					return true
+				end
+			else
+				if v1.Value == v0 then
+					return true
+				end
 			end
 		end
 	end
@@ -729,8 +834,14 @@ end
 --< StartsWith >--
 function Bucket:StartsWith(...)
 	for i0, v0 in ipairs(arg) do
-		if self:FirstKey() == v0 then
-			return true
+		if self:FirstType() == "pair" then
+			if self:FirstKey() == v0 then
+				return true
+			end
+		else
+			if self:First() == v0 then
+				return true
+			end
 		end
 	end
 
@@ -755,8 +866,14 @@ end
 --< EndsWith >--
 function Bucket:EndsWith(...)
 	for i0, v0 in ipairs(arg) do
-		if self:LastKey() == v0 then
-			return true
+		if self:LastType() == "pair" then
+			if self:LastKey() == v0 then
+				return true
+			end
+		else
+			if self:Last() == v0 then
+				return true
+			end
 		end
 	end
 
@@ -781,9 +898,16 @@ end
 --< Rename >--
 function Bucket:Rename(Key, New)
 	for i, v in pairs(self) do
-		if v.Key == Key then
-			v.Key = New
-			break
+		if v.Type == "pair" then
+			if v.Key == Key then
+				v.Key = New
+				break
+			end
+		else
+			if v.Key == Key then
+				v.Key = New
+				break
+			end
 		end
 	end
 end
@@ -798,6 +922,68 @@ function Bucket:RenameAt(Index, New)
 			break
 		end
 	end
+end
+
+
+
+--< Pour >--
+function Bucket:Pour()
+	local thing = {}
+	
+	for i, v in pairs(self) do
+		if v.Type == "uni" then
+			thing[i] = v.Value
+		else
+			thing[i] = { [v.Key] = v.Value }
+		end
+	end
+	
+	return thing
+end
+
+
+
+--< Clone >--
+function Bucket:Clone()
+    return Bucket.new( self:Pour() )
+end
+
+
+
+--< Filter >--
+function Bucket:Filter(func)
+	local thing = Bucket.new()
+	
+	for i, v in pairs(self) do
+		if func(v.Key, v.Value, i, v.Type) then
+		    if v.Type == "uni" then
+			    thing:Push(v.Value)
+			else
+			    thing:Push({ [v.Key] = v.Value })
+			end
+		end
+	end
+	
+	return thing
+end
+
+
+
+--< Reverse >--
+function Bucket:Reverse()
+	local thing = Bucket.new()
+	
+	for i = self:Length(), 1, -1 do
+		local v = self[i]
+		
+		if v.Type == "uni" then
+		    thing:Push(v.Value)
+		else
+		    thing:Push({ [v.Key] = v.Value })
+		end
+	end
+	
+	return thing
 end
 
 
