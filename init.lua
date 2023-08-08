@@ -23,10 +23,17 @@ function Bucket.new(array)
     	for i, v in pairs(array) do
     	    local stuff
     	    local vl = 0
+			local str = tostring(v)
     	    
     	    if type(v) == "table" then for _ in pairs(v) do vl = vl + 1 end end
+
+			if string.sub(str,1,string.len("(("))=="((" then
+				stuff = {
+	    	        Key = i,
+	    	        Value = v
+	    	    }
     	    
-    	    if type(v) == "table" and vl == 1 then
+			elseif type(v) == "table" and vl == 1 then
     	        for Key, Value in pairs(v) do
     	            stuff = {
     	                Key = Key,
@@ -106,8 +113,11 @@ end
 --< Push >--
 function Bucket:Push(Entry)
 	local index = self:Length() + 1
+	local l = 0
+
+	if type(Entry) == "table" then for _ in pairs(Entry) do l = l + 1 end end
 	
-    if type(Entry) == "table" then
+    if type(Entry) == "table" and l == 1 then
         for Key, Value in pairs(Entry) do
             stuff = {
                 Key = Key,
@@ -129,7 +139,10 @@ end
 
 --< Pull >--
 function Bucket:Pull(Entry)
-    if type(Entry) == "table" then
+	local l = 0
+	if type(Entry) == "table" then for _ in pairs(Entry) do l = l + 1 end end
+	
+    if type(Entry) == "table" and l == 1 then
         for Key, Value in pairs(Entry) do
             stuff = {
                 Key = Key,
@@ -151,7 +164,10 @@ end
 
 --< Insert >--
 function Bucket:Append(Index, Entry)
-    if type(Entry) == "table" then
+	local l = 0
+	if type(Entry) == "table" then for _ in pairs(Entry) do l = l + 1 end end
+	
+    if type(Entry) == "table" and l == 1 then
         for Key, Value in pairs(Entry) do
             stuff = {
                 Key = Key,
@@ -442,7 +458,7 @@ function Bucket:__tostring()
 
 		-- if it's another bucket
 		if string.sub(str,1,string.len("(("))=="((" then
-		    value = '{ Bucket ('..v:Length().."x) }"
+		    value = '( Bucket ('..v:Length().."x) )"
 
 		-- if it's a string
 		elseif type(v) == "string" then
