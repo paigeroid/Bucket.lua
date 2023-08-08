@@ -43,6 +43,21 @@ this is because interally most of it is set up like this:
 ```lua
 { index -> { key -> value } }
 ```
+on top of this there are a few main things for each entry
+- Key
+- Value
+- Index
+- Type
+<br>
+the key value and type can be found included in the actual entries and in things like ForEach
+the index is usually only gotten through functions
+```lua
+bucket:ForEach(function(Key, Value, Index, Type)
+
+end)
+```
+
+
 
 <br><br>
 
