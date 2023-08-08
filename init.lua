@@ -1,6 +1,6 @@
 --[[
 
-	Bucket
+	bucket lua
 	@paigeroid
 
 ]]
