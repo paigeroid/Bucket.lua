@@ -155,3 +155,65 @@ this is because interally most of it is set up like this:
 > - returns: None
 > - args: Index: `Number`, Entry: `Object`
 > <br>
+
+> ## Bucket:Set()
+> - desc: sets the value of a key
+> - returns: None
+> - args: Key: `String`, Value: `Object`
+> <br>
+
+> ## Bucket:SetAt()
+> - desc: sets the value at an index
+> - returns: None
+> - args: Index: `Number`, Value: `Object`
+> <br>
+
+> ## Bucket:Del()
+> - desc: deletes the entry of a key
+> - returns: None
+> - args: Key: `String`
+> <br>
+
+> ## Bucket:DelVal()
+> - desc: deletes the entry of a value
+> - returns: None
+> - args: Value: `Object`
+> <br>
+
+> ## Bucket:DetAt()
+> - desc: deletes the entry at an index
+> - returns: None
+> - args: Index: `Number`
+> <br>
+
+> ## Bucket:Pop()
+> - desc: deletes the last entry
+> - returns: None
+> - args: Offset: `Number`
+> - note: you can offset it down
+> <br>
+
+> ## Bucket:Shift()
+> - desc: deletes the first entry
+> - returns: None
+> - args: Offset: `Number`
+> - note: you can offset it up
+> <br>
+
+> ## Bucket:DelDNU()
+> - desc: deletes the entry of a key without updating keys
+> - returns: None
+> - args: Key: `String`
+> <br>
+
+> ## Bucket:DelVal()
+> - desc: deletes the entry of a value without updating keys
+> - returns: None
+> - args: Value: `Object`
+> <br>
+
+> ## Bucket:DetAtDNU()
+> - desc: deletes the entry at an index without updating keys
+> - returns: None
+> - args: Index: `Number`
+> <br>
