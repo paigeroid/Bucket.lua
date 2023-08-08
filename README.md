@@ -480,6 +480,22 @@ bkt:IndexOf("b") -- 2
 
 <br>
 
+> ## Bucket:Clone()
+> - desc: makes a copy separate from the original
+> - returns: Bucket: `Table`
+> - args: None
+> <br>
+
+<br>
+
+> ## Bucket:Update()
+> - desc: updates the uni entries so that their keys are accurate to their index
+> - returns: None
+> - args: None
+> <br>
+
+<br>
+
 > ## Bucket:DelDNU()
 > - desc: deletes the entry of a key without updating keys
 > - returns: None
@@ -501,21 +517,3 @@ bkt:IndexOf("b") -- 2
 > - returns: None
 > - args: Index: `Number`
 > <br>
-
-<br>
-
-> ## Bucket:Clone()
-> - desc: makes a copy separate from the original
-> - returns: Bucket: `Table`
-> - args: None
-> <br>
-
-<br>
-
-> ## Bucket:Update()
-> - desc: updates the uni entries so that their keys are accurate to their index
-> - returns: None
-> - args: None
-> <br>
-
-<br>
