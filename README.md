@@ -1,5 +1,9 @@
 ---
 # bucket lua
+By paigeroid
+
+<br>
+
 A recreation of my Node.JS Stews package in Lua for use in projects<br>
 I'm too lazy to make actual documentation so look below
 
