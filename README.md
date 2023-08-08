@@ -1,6 +1,6 @@
 ---
 # bucket lua
-__By paigeroid__
+by paigeroid
 
 <br>
 
