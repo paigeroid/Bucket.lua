@@ -56,6 +56,19 @@ bucket:ForEach(function(Key, Value, Index, Type)
     -- stuff
 end)
 ```
+the way it's structured if you don't provide a key it'll default to its index<br>
+despite this most of the functions distinguish between the types to make it work best
+```lua
+local bucket = Bucket.new({
+    "a",
+    { b = "val" }
+})
+
+
+bkt:IndexOf("a") -- 1
+
+bkt:IndexOf("b") -- 2
+```
 
 
 
