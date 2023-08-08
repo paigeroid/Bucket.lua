@@ -8,7 +8,7 @@ I'm too lazy to make actual documentation so look below
 <br>
 
 # Syntax
-when making buckets you should structure them like this
+when making buckets you should structure them somewhat like this
 ```lua
 local bucket = Bucket.new({
     "string", -- string
@@ -33,7 +33,7 @@ bucket:Push(456)
 bucket:Push({ key2 = "val2" })
 
 -- table
-bucket:Push({ "d", "e", "f" })
+bucket:Push( { "d", "e", "f" } )
 ```
 this is because interally most of it is set up like this:
 ```lua
