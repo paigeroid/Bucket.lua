@@ -199,6 +199,22 @@ end)
 
 <br>
 
+> ## Bucket:GetType()
+> - desc: returns the type of a key
+> - returns: Type: `Table`
+> - args: Key: `String`
+> <br>
+
+<br>
+
+> ## Bucket:TypeAt()
+> - desc: returns the type at an index
+> - returns: Type: `String`
+> - args: Index: `Number`
+> <br>
+
+<br>
+
 > ## Bucket:GetEntry()
 > - desc: returns the entry of a key
 > - returns: Entry: `Table`
@@ -275,6 +291,24 @@ end)
 > ## Bucket:LastKey()
 > - desc: returns the last key
 > - returns: Key: `String`
+> - args: Offset: `Number`
+> - note: you can offset it down
+> <br>
+
+<br>
+
+> ## Bucket:FirstType()
+> - desc: returns the first type
+> - returns: Type: `String`
+> - args: Offset: `Number`
+> - note: you can offset it up
+> <br>
+
+<br>
+
+> ## Bucket:LastType()
+> - desc: returns the last type
+> - returns: Type: `String`
 > - args: Offset: `Number`
 > - note: you can offset it down
 > <br>
@@ -397,6 +431,26 @@ end)
 
 <br>
 
+> ## Bucket:ToString()
+> - desc: turns it into a string
+> - returns: `String`
+> - args: None
+> - note: equivalent to doing this
+> ```lua
+> tostring(Bucket)
+> ```
+> <br>
+
+<br>
+
+> ## Bucket:Join()
+> - desc: joins the insides with a joiner
+> - returns: `String`
+> - args: Joiner: `String`
+> <br>
+
+<br>
+
 > ## Bucket:DelDNU()
 > - desc: deletes the entry of a key without updating keys
 > - returns: None
@@ -421,18 +475,10 @@ end)
 
 <br>
 
-> ## Bucket:ToString()
-> - desc: turns it into a string
-> - returns: `String`
+> ## Bucket:Update()
+> - desc: updates the uni entries so that their keys are accurate to their index
+> - returns: None
 > - args: None
-> - note: equivalent to doing this
-> ```lua
-> tostring(Bucket)
-> ```
 > <br>
 
-> ## Bucket:Join()
-> - desc: joins the insides with a joiner
-> - returns: `String`
-> - args: Joiner: `String`
-> <br>
+<br>
