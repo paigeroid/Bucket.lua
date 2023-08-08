@@ -32,7 +32,8 @@ bucket:Push(456)
 -- pair
 bucket:Push({ key2 = "val2" })
 
-bucket:Push({ "d" })
+-- table
+bucket:Push({ "d", "e", "f" })
 ```
 this is because interally most of it is set up like this:
 ```lua
