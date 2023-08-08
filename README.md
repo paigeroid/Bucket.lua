@@ -54,11 +54,15 @@ this is because interally most of it is set up like this:
 > - args: Insides: `Table`
 > <br>
 
+<br>
+
 > ## Bucket:Length()
 > - desc: returns the length of the bucket
 > - returns: `Number`
 > - args: None
 > <br>
+
+<br>
 
 > ## Bucket:Get()
 > - desc: returns the value of a key
@@ -66,17 +70,39 @@ this is because interally most of it is set up like this:
 > - args: Key: `String`
 > <br>
 
+<br>
+
 > ## Bucket:At()
 > - desc: returns the value at an index
 > - returns: Value: `Object`
 > - args: Index: `Number`
 > <br>
 
+<br>
+
+> ## Bucket:Keys()
+> - desc: returns all of the keys in a Bucket
+> - returns: Keys: `Bucket`
+> - args: None
+> <br>
+
+<br>
+
+> ## Bucket:Values()
+> - desc: returns all of the values in a Bucket
+> - returns: Values: `Bucket`
+> - args: None
+> <br>
+
+<br>
+
 > ## Bucket:KeyAt()
 > - desc: returns the key at an index
 > - returns: Key: `String`
 > - args: Index: `Number`
 > <br>
+
+<br>
 
 > ## Bucket:GetEntry()
 > - desc: returns the entry of a key
@@ -87,6 +113,8 @@ this is because interally most of it is set up like this:
 > Bucket[ Bucket:IndexOf( Key ) ]
 > ```
 
+<br>
+
 > ## Bucket:EntryAt()
 > - desc: returns the entry at an index
 > - returns: Entry: `Table`
@@ -96,12 +124,24 @@ this is because interally most of it is set up like this:
 > Bucket[Index]
 > ```
 
+<br>
+
+> ## Bucket:ForEach()
+> - desc: loops through the insides and runs the action given
+> - returns: None
+> - args: `Function`
+> <br>
+
+<br>
+
 > ## Bucket:First()
 > - desc: returns the first value
 > - returns: Value: `Object`
 > - args: Offset: `Number`
 > - note: you can offset it up
 > <br>
+
+<br>
 
 > ## Bucket:Last()
 > - desc: returns the last value
@@ -110,12 +150,16 @@ this is because interally most of it is set up like this:
 > - note: you can offset it down
 > <br>
 
+<br>
+
 > ## Bucket:FirstKey()
 > - desc: returns the first key
 > - returns: Key: `String`
 > - args: Offset: `Number`
 > - note: you can offset it up
 > <br>
+
+<br>
 
 > ## Bucket:LastKey()
 > - desc: returns the last key
@@ -124,12 +168,16 @@ this is because interally most of it is set up like this:
 > - note: you can offset it down
 > <br>
 
+<br>
+
 > ## Bucket:FirstEntry()
 > - desc: returns the first entry
 > - returns: Entry: `Table`
 > - args: Offset: `Number`
 > - note: you can offset it up
 > <br>
+
+<br>
 
 > ## Bucket:LastEntry()
 > - desc: returns the last entry
@@ -138,11 +186,15 @@ this is because interally most of it is set up like this:
 > - note: you can offset it down
 > <br>
 
+<br>
+
 > ## Bucket:Push()
 > - desc: adds a new entry at the end
 > - returns: None
 > - args: Entry: `Object`
 > <br>
+
+<br>
 
 > ## Bucket:Pull()
 > - desc: adds a new entry at the start
@@ -150,11 +202,15 @@ this is because interally most of it is set up like this:
 > - args: Entry: `Object`
 > <br>
 
+<br>
+
 > ## Bucket:Append()
 > - desc: adds a new entry at a given index
 > - returns: None
 > - args: Index: `Number`, Entry: `Object`
 > <br>
+
+<br>
 
 > ## Bucket:Set()
 > - desc: sets the value of a key
@@ -162,11 +218,15 @@ this is because interally most of it is set up like this:
 > - args: Key: `String`, Value: `Object`
 > <br>
 
+<br>
+
 > ## Bucket:SetAt()
 > - desc: sets the value at an index
 > - returns: None
 > - args: Index: `Number`, Value: `Object`
 > <br>
+
+<br>
 
 > ## Bucket:Del()
 > - desc: deletes the entry of a key
@@ -174,17 +234,23 @@ this is because interally most of it is set up like this:
 > - args: Key: `String`
 > <br>
 
+<br>
+
 > ## Bucket:DelVal()
 > - desc: deletes the entry of a value
 > - returns: None
 > - args: Value: `Object`
 > <br>
 
+<br>
+
 > ## Bucket:DetAt()
 > - desc: deletes the entry at an index
 > - returns: None
 > - args: Index: `Number`
 > <br>
+
+<br>
 
 > ## Bucket:Pop()
 > - desc: deletes the last entry
@@ -193,6 +259,8 @@ this is because interally most of it is set up like this:
 > - note: you can offset it down
 > <br>
 
+<br>
+
 > ## Bucket:Shift()
 > - desc: deletes the first entry
 > - returns: None
@@ -200,11 +268,15 @@ this is because interally most of it is set up like this:
 > - note: you can offset it up
 > <br>
 
+<br>
+
 > ## Bucket:DelDNU()
 > - desc: deletes the entry of a key without updating keys
 > - returns: None
 > - args: Key: `String`
 > <br>
+
+<br>
 
 > ## Bucket:DelVal()
 > - desc: deletes the entry of a value without updating keys
@@ -212,8 +284,18 @@ this is because interally most of it is set up like this:
 > - args: Value: `Object`
 > <br>
 
+<br>
+
 > ## Bucket:DetAtDNU()
 > - desc: deletes the entry at an index without updating keys
 > - returns: None
 > - args: Index: `Number`
+> <br>
+
+<br>
+
+> ## Bucket:Join()
+> - desc: joins the insides with a joiner
+> - returns: `String`
+> - args: Joiner: `String`
 > <br>
