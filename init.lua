@@ -796,13 +796,34 @@ end
 
 
 --< Has >--
-function Bucket:Has(Key)
-	for i, v in pairs(self) do
-		if v.Type == "pair" then
-			if v.Key == Key then
-				return true
+function Bucket:Has(...)
+	local args = {...}
+	
+	for _, Key in pairs(args) do
+		for i, v in pairs(self) do
+			if v.Type == "pair" then
+				if v.Key == Key then
+					return true
+				end
+			else
+				if v.Value == Key then
+					return true
+				end
 			end
-		else
+		end
+	end
+
+	return false
+end
+
+
+
+--< HasVal >--
+function Bucket:HasVal(...)
+	local args = {...}
+	
+	for _, Value in pairs(args) do
+		for i, v in pairs(self) do
 			if v.Value == Key then
 				return true
 			end
@@ -814,28 +835,19 @@ end
 
 
 
---< HasVal >--
-function Bucket:HasVal(Value)
-	for i, v in pairs(self) do
-		if v.Value == Value then
-			return true
-		end
-	end
-
-	return false
-end
-
-
-
 --< StartsWith >--
-function Bucket:StartsWith(Key)
-	if self:FirstType() == "pair" then
-		if self:FirstKey() == Key then
-			return true
-		end
-	else
-		if self:First() == Key then
-			return true
+function Bucket:StartsWith(...)
+	local args = {...}
+	
+	for _, Key in pairs(args) do
+		if self:FirstType() == "pair" then
+			if self:FirstKey() == Key then
+				return true
+			end
+		else
+			if self:First() == Key then
+				return true
+			end
 		end
 	end
 
@@ -845,32 +857,50 @@ end
 
 
 --< StartsWithVal >--
-function Bucket:StartsWithVal(Value)
-	return self:First() == Value
-end
-
-
-
----< EndsWith >--
-function Bucket:EndsWith(Key)
-	if self:LastType() == "pair" then
-		if self:LastKey() == Key then
-			return true
-		end
-	else
-		if self:Last() == Key then
+function Bucket:StartsWithVal(...)
+	local args = {...}
+	
+	for _, Value in pairs(args) do
+		if self:First() == Value then
 			return true
 		end
 	end
-
+	
 	return false
 end
 
 
 
+---< EndsWith >--
+function Bucket:EndsWith(...)
+	local args = {...}
+	
+	for _, Key in pairs(args) do
+		if self:LastType() == "pair" then
+			if self:LastKey() == Key then
+				return true
+			end
+		else
+			if self:Last() == Key then
+				return true
+			end
+		end
+	end
+end
+
+
+
 --< EndsWithVal >--
-function Bucket:EndsWithVal(Value)
-	return self:Last() == Value
+function Bucket:EndsWithVal(...)
+	local args = {...}
+	
+	for _, Value in pairs(args) do
+		if self:Last() == Value then
+			return true
+		end
+	end
+	
+	return false
 end
 
 
