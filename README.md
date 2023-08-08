@@ -88,18 +88,18 @@ this is because interally most of it is set up like this:
 
 <br>
 
-> ## Bucket:StartsWithVal()
-> - desc: checks if it starts with a value
-> - returns: `Boolean`
-> - args: Value: `Object`
-> <br>
-
-<br>
-
 > ## Bucket:EndsWith()
 > - desc: checks if it ends with a key
 > - returns: `Boolean`
 > - args: Key: `String`
+> <br>
+
+<br>
+
+> ## Bucket:StartsWithVal()
+> - desc: checks if it starts with a value
+> - returns: `Boolean`
+> - args: Value: `Object`
 > <br>
 
 <br>
@@ -214,6 +214,22 @@ this is because interally most of it is set up like this:
 
 <br>
 
+> ## Bucket:Every()
+> - desc: loops through the insides and checks if EVERY entry passes a given action 
+> - returns: `Boolean`
+> - args: `Function`
+> <br>
+
+<br>
+
+> ## Bucket:Some()
+> - desc: loops through the insides and checks if ONLY ONE entry passes a given action 
+> - returns: `Boolean`
+> - args: `Function`
+> <br>
+
+<br>
+
 > ## Bucket:First()
 > - desc: returns the first value
 > - returns: Value: `Object`
@@ -308,6 +324,22 @@ this is because interally most of it is set up like this:
 
 <br>
 
+> ## Bucket:Rename()
+> - desc: renames a given key
+> - returns: None
+> - args: Key: `String`, New: `String`
+> <br>
+
+<br>
+
+> ## Bucket:RenameAt()
+> - desc: renames the key of an index
+> - returns: None
+> - args: Index: `Number`, New: `String`
+> <br>
+
+<br>
+
 > ## Bucket:Del()
 > - desc: deletes the entry of a key
 > - returns: None
@@ -373,6 +405,16 @@ this is because interally most of it is set up like this:
 > <br>
 
 <br>
+
+> ## Bucket:ToString()
+> - desc: turns it into a string
+> - returns: `String`
+> - args: None
+> - note: equivalent to doing this
+> ```lua
+> tostring(Bucket)
+> ```
+> <br>
 
 > ## Bucket:Join()
 > - desc: joins the insides with a joiner
