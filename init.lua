@@ -11,13 +11,14 @@ local Bucket = {}
 Bucket.__index = Bucket
 
 
+
 --< New >--
 function Bucket.new(array)
 	
 	-- create the new thing
 	local self = setmetatable( {}, Bucket )
     local length = 0
-    
+	
     if array then
     	for i, v in pairs(array) do
     	    local stuff
@@ -31,6 +32,7 @@ function Bucket.new(array)
     	                Key = Key,
     	                Value = Value
     	            }
+					break
     	        end
     	    else
     	        stuff = {
@@ -148,7 +150,7 @@ end
 
 
 --< Insert >--
-function Bucket:Insert(Index, Entry)
+function Bucket:Append(Index, Entry)
     if type(Entry) == "table" then
         for Key, Value in pairs(Entry) do
             stuff = {
@@ -174,6 +176,19 @@ function Bucket:Get(str)
     for i, v in pairs(self) do
         if v.Key == str then
             return v.Value
+        end
+    end
+    
+    return nil
+end
+
+
+
+--< GetEntry >--
+function Bucket:GetEntry(str)
+    for i, v in pairs(self) do
+        if v.Key == str then
+            return v
         end
     end
     
@@ -421,25 +436,36 @@ function Bucket:__tostring()
 	local thing = "(("
 	
 	self:ForEach(function(k, v, i)
-		
-		local va
-		if type(v) == "string" then
+
+		local str = tostring(v)
+		local value
+
+		-- if it's another bucket
+		if string.sub(str,1,string.len("(("))=="((" then
+		    value = '{ Bucket ('..v:Length().."x) }"
+
+		-- if it's a string
+		elseif type(v) == "string" then
 		    value = '"'..tostring(v)..'"'
+		
+		-- if it's a table	
 		elseif type(v) == "table" then
 		    local vl = 0
 	        for _ in pairs(v) do vl = vl + 1 end
 	        
 		    value = '{ Table ('..vl.."x) }"
+		
+		-- if it's none of those	
 		else
 		    value = tostring(v)
 		end
 		
-		-- if it's a table
+		-- if it's a pair
 		if k ~= i then
-			thing = thing.." [ "..k.."::"..value.." ]"
+			thing = thing.." [ *"..k.." => "..value.." ]"
 		
-		-- if it's just a normal thing
-		else
+		-- if it's just a normal entry
+		else			
 			thing = thing.." "..value
 		end
 		
@@ -472,21 +498,30 @@ function Bucket:Join(joiner)
 	
 	self:ForEach(function(k, v, i)
 		
-		local va
-		if type(v) == "table" then
+		local value
+		local str = tostring(v)
+
+		-- if it's another bucket
+		if string.sub(str,1,string.len("(("))=="((" then
+		    value = 'Bucket ('..v:Length().."x)"
+
+		-- if it's a table
+		elseif type(v) == "table" then
 		    local vl = 0
 	        for _ in pairs(v) do vl = vl + 1 end
 	        
 		    value = 'Table ('..vl.."x)"
+		
+		-- if it's none of those	
 		else
 		    value = tostring(v)
 		end
 		
-		-- if it's a table
+		-- if it's a pair
 		if k ~= i then
-			thing = thing..k.."::"..value
+			thing = thing.."*"..k.."=>"..value
 		
-		-- if it's just a normal thing
+		-- if it's just a normal entry
 		else
 			thing = thing..value
 		end
@@ -499,5 +534,208 @@ function Bucket:Join(joiner)
 	
 	return thing
 end
+
+
+--< Every >--
+function Bucket:Every(func)
+	for i, v in pairs(self) do
+		if not func(v.Key, v.Value, i) then
+			return false
+		end
+	end
+
+	return true
+end
+
+
+
+--< Some >--
+function Bucket:Some(func)
+	for i, v in pairs(self) do
+		if func(v.Key, v.Value, i) then
+			return true
+		end
+	end
+
+	return false
+end
+
+
+
+--< Keys >--
+function Bucket:Keys()
+	local keys = {}
+	
+	for i, v in pairs(self) do
+		table.insert(keys, v.Key)
+	end
+
+	return Bucket.new(keys)
+end
+
+
+
+--< Values >--
+function Bucket:Values()
+	local vals = {}
+	
+	for i, v in pairs(self) do
+		table.insert(vals, v.Value)
+	end
+
+	return Bucket.new(vals)
+end
+
+
+
+--< IndexOf >--
+function Bucket:IndexOf(Key)
+	for i, v in pairs(self) do
+		if v.Key == Key then
+			return i
+		end
+	end
+
+	return nil
+end
+
+
+
+--< IndexOf >--
+function Bucket:IndexOfVal(Value)
+	for i, v in pairs(self) do
+		if v.Value == Value then
+			return i
+		end
+	end
+
+	return nil
+end
+
+
+
+--< LastIndexOf >--
+function Bucket:LastIndexOf(Key)
+	for i = self:Length(), 1, -1 do
+		local v = self[i]
+		
+		if v.Key == Key then
+			return i
+		end
+	end
+
+	return nil
+end
+
+
+
+--< LastIndexOf >--
+function Bucket:LastIndexOfVal(Value)
+	for i = self:Length(), 1, -1 do
+		local v = self[i]
+		
+		if v.Value == Value then
+			return i
+		end
+	end
+
+	return nil
+end
+
+
+
+--< Has >--
+function Bucket:Has(...)
+	for i0, v0 in ipairs(arg) do
+		for i1, v1 in pairs(self) do
+			if v1.Key == v0 then
+				return true
+			end
+		end
+	end
+
+	return false
+end
+
+
+
+--< HasVal >--
+function Bucket:HasVal(...)
+	for i0, v0 in ipairs(arg) do
+		for i1, v1 in pairs(self) do
+			if v1.Value == v0 then
+				return true
+			end
+		end
+	end
+
+	return false
+end
+
+
+
+--< StartsWith >--
+function Bucket:StartsWith(...)
+	for i0, v0 in ipairs(arg) do
+		if self:FirstKey() == v0 then
+			return true
+		end
+	end
+
+	return false
+end
+
+
+
+--< StartsWithVal >--
+function Bucket:StartsWithVal(...)
+	for i0, v0 in ipairs(arg) do
+		if self:First() == v0 then
+			return true
+		end
+	end
+
+	return false
+end
+
+
+
+--< EndsWith >--
+function Bucket:EndsWith(...)
+	for i0, v0 in ipairs(arg) do
+		if self:LastKey() == v0 then
+			return true
+		end
+	end
+
+	return false
+end
+
+
+
+--< EndsWithVal >--
+function Bucket:EndsWithVal(...)
+	for i0, v0 in ipairs(arg) do
+		if self:Last() == v0 then
+			return true
+		end
+	end
+
+	return false
+end
+
+
+
+--< Rename >--
+function Bucket:Rename(Key, New)
+	for i, v in pairs(self) do
+		if v.Key == Key then
+			v.Key = New
+			break
+		end
+	end
+end
+
+
 
 return Bucket
