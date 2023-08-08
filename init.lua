@@ -535,7 +535,7 @@ function Bucket:Join(joiner)
 		
 		-- if it's a pair
 		if k ~= i then
-			thing = thing.."*"..k.."=>"..value
+			thing = thing.."*"..k.." => "..value
 		
 		-- if it's just a normal entry
 		else
