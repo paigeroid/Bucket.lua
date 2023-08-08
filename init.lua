@@ -796,17 +796,15 @@ end
 
 
 --< Has >--
-function Bucket:Has(...)
-	for i0, v0 in ipairs(arg) do
-		for i1, v1 in pairs(self) do
-			if v1.Type == "pair" then
-				if v1.Key == v0 then
-					return true
-				end
-			else
-				if v1.Value == v0 then
-					return true
-				end
+function Bucket:Has(Key)
+	for i, v in pairs(self) do
+		if v.Type == "pair" then
+			if v.Key == Key then
+				return true
+			end
+		else
+			if v.Value == Key then
+				return true
 			end
 		end
 	end
@@ -817,12 +815,10 @@ end
 
 
 --< HasVal >--
-function Bucket:HasVal(...)
-	for i0, v0 in ipairs(arg) do
-		for i1, v1 in pairs(self) do
-			if v1.Value == v0 then
-				return true
-			end
+function Bucket:HasVal(Value)
+	for i, v in pairs(self) do
+		if v.Value == Value then
+			return true
 		end
 	end
 
@@ -832,16 +828,14 @@ end
 
 
 --< StartsWith >--
-function Bucket:StartsWith(...)
-	for i0, v0 in ipairs(arg) do
-		if self:FirstType() == "pair" then
-			if self:FirstKey() == v0 then
-				return true
-			end
-		else
-			if self:First() == v0 then
-				return true
-			end
+function Bucket:StartsWith(Key)
+	if self:FirstType() == "pair" then
+		if self:FirstKey() == Key then
+			return true
+		end
+	else
+		if self:First() == Key then
+			return true
 		end
 	end
 
@@ -851,29 +845,21 @@ end
 
 
 --< StartsWithVal >--
-function Bucket:StartsWithVal(...)
-	for i0, v0 in ipairs(arg) do
-		if self:First() == v0 then
-			return true
-		end
-	end
-
-	return false
+function Bucket:StartsWithVal(Value)
+	return self:First() == Value
 end
 
 
 
---< EndsWith >--
-function Bucket:EndsWith(...)
-	for i0, v0 in ipairs(arg) do
-		if self:LastType() == "pair" then
-			if self:LastKey() == v0 then
-				return true
-			end
-		else
-			if self:Last() == v0 then
-				return true
-			end
+---< EndsWith >--
+function Bucket:EndsWith(Key)
+	if self:LastType() == "pair" then
+		if self:LastKey() == Key then
+			return true
+		end
+	else
+		if self:Last() == Key then
+			return true
 		end
 	end
 
@@ -883,14 +869,8 @@ end
 
 
 --< EndsWithVal >--
-function Bucket:EndsWithVal(...)
-	for i0, v0 in ipairs(arg) do
-		if self:Last() == v0 then
-			return true
-		end
-	end
-
-	return false
+function Bucket:EndsWithVal(Value)
+	return self:Last() == Value
 end
 
 
