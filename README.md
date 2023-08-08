@@ -44,10 +44,10 @@ this is because interally most of it is set up like this:
 { index -> { key -> value } }
 ```
 on top of this there are a few main things for each entry
-- Key
-- Value
-- Index
-- Type
+- Key: what is used alternatively to get the value
+- Value: the thing that's being stored
+- Index: number that represents where something in the bucket is from 1-length
+- Type: either "uni" or "pair", pairs are the key = value and unis are just the value
   
 the key value and type can be found included in the actual entries and in things like ForEach<br>
 the index is usually only gotten through functions
