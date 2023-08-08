@@ -58,6 +58,37 @@ this is because interally most of it is set up like this:
 > - desc: returns the value of a key
 > - returns: Value: `Object`
 > - args: Key: `String`
+> <br>
+
+> ## Bucket:At()
+> - desc: returns the value at an index
+> - returns: Value: `Object`
+> - args: Index: `Number`
+> <br>
+
+> ## Bucket:KeyAt()
+> - desc: returns the key at an index
+> - returns: Key: `String`
+> - args: Index: `Number`
+> <br>
+
+> ## Bucket:GetEntry()
+> - desc: returns the entry of a key
+> - returns: Entry: `Table`
+> - args: Key: `String`
+> - note: equivalent to doing this
+> ```lua
+> Bucket[ Bucket:IndexOf( Key ) ]
+> ```
+
+> ## Bucket:EntryAt()
+> - desc: returns the entry at an index
+> - returns: Entry: `Table`
+> - args: Index: `Number`
+> - note: equivalent to doing this
+> ```lua
+> Bucket[Index]
+> ```
 
 > ## Bucket:Length()
 > - desc: returns the length of the bucket
