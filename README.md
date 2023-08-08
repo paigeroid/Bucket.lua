@@ -64,6 +64,54 @@ this is because interally most of it is set up like this:
 
 <br>
 
+> ## Bucket:Has()
+> - desc: checks if it has a key
+> - returns: `Boolean`
+> - args: Key: `String`
+> <br>
+
+<br>
+
+> ## Bucket:HasVal()
+> - desc: checks if it has a value
+> - returns: `Boolean`
+> - args: Value: `Object`
+> <br>
+
+<br>
+
+> ## Bucket:StartsWith()
+> - desc: checks if it starts with a key
+> - returns: `Boolean`
+> - args: Key: `String`
+> <br>
+
+<br>
+
+> ## Bucket:StartsWithVal()
+> - desc: checks if it starts with a value
+> - returns: `Boolean`
+> - args: Value: `Object`
+> <br>
+
+<br>
+
+> ## Bucket:EndsWith()
+> - desc: checks if it ends with a key
+> - returns: `Boolean`
+> - args: Key: `String`
+> <br>
+
+<br>
+
+> ## Bucket:EndsWithVal()
+> - desc: checks if it ends with a value
+> - returns: `Boolean`
+> - args: Value: `Object`
+> <br>
+
+<br>
+
 > ## Bucket:Get()
 > - desc: returns the value of a key
 > - returns: Value: `Object`
@@ -92,6 +140,38 @@ this is because interally most of it is set up like this:
 > - desc: returns all of the values in a Bucket
 > - returns: Values: `Bucket`
 > - args: None
+> <br>
+
+<br>
+
+> ## Bucket:IndexOf()
+> - desc: returns the first index of a key
+> - returns: Index: `Number`
+> - args: Key: `String`
+> <br>
+
+<br>
+
+> ## Bucket:IndexOfVal()
+> - desc: returns the first index of a value
+> - returns: Index: `Number`
+> - args: Value: `Object`
+> <br>
+
+<br>
+
+> ## Bucket:LastIndexOf()
+> - desc: returns the last index of a key
+> - returns: Index: `Number`
+> - args: Key: `String`
+> <br>
+
+<br>
+
+> ## Bucket:LastIndexOfVal()
+> - desc: returns the last index of a value
+> - returns: Index: `Number`
+> - args: Value: `Object`
 > <br>
 
 <br>
