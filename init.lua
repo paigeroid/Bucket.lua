@@ -790,4 +790,16 @@ end
 
 
 
+--< RenameAt >--
+function Bucket:RenameAt(Index, New)
+	for i, v in pairs(self) do
+		if i == Index then
+			v.Key = New
+			break
+		end
+	end
+end
+
+
+
 return Bucket
