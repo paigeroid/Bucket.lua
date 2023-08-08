@@ -78,7 +78,7 @@ bkt:IndexOf("b") -- 2
 
 > ## Bucket.new()
 > - desc: makes a new bucket
-> - returns: Bucket
+> - returns: Bucket: `Table`
 > - args: Insides: `Table`
 > <br>
 
@@ -444,6 +444,22 @@ bkt:IndexOf("b") -- 2
 
 <br>
 
+> ## Bucket:Filter()
+> - desc: filters out things that don't pass a given function
+> - returns: Bucket: `Table`
+> - args: `Function`
+> <br>
+
+<br>
+
+> ## Bucket:Reverse()
+> - desc: filters out things that don't pass a given function
+> - returns: Bucket: `Table`
+> - args: `Function`
+> <br>
+
+<br>
+
 > ## Bucket:ToString()
 > - desc: turns it into a string
 > - returns: `String`
@@ -484,6 +500,14 @@ bkt:IndexOf("b") -- 2
 > - desc: deletes the entry at an index without updating keys
 > - returns: None
 > - args: Index: `Number`
+> <br>
+
+<br>
+
+> ## Bucket:Clone()
+> - desc: makes a copy separate from the original
+> - returns: Bucket: `Table`
+> - args: None
 > <br>
 
 <br>
