@@ -544,6 +544,8 @@ end
 
 --< Join >--
 function Bucket:Join(joiner)
+	if not joiner then joiner = "," end
+		
 	local thing = ""
 	
 	self:ForEach(function(k, v, i)
