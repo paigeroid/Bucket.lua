@@ -54,6 +54,12 @@ this is because interally most of it is set up like this:
 > - args: Insides: `Table`
 > <br>
 
+> ## Bucket:Length()
+> - desc: returns the length of the bucket
+> - returns: `Number`
+> - args: None
+> <br>
+
 > ## Bucket:Get()
 > - desc: returns the value of a key
 > - returns: Value: `Object`
@@ -90,10 +96,46 @@ this is because interally most of it is set up like this:
 > Bucket[Index]
 > ```
 
-> ## Bucket:Length()
-> - desc: returns the length of the bucket
-> - returns: `Number`
-> - args: None
+> ## Bucket:First()
+> - desc: returns the first value
+> - returns: Value: `Object`
+> - args: Offset: `Number`
+> - note: you can offset it up
+> <br>
+
+> ## Bucket:Last()
+> - desc: returns the last value
+> - returns: Value: `Object`
+> - args: Offset: `Number`
+> - note: you can offset it down
+> <br>
+
+> ## Bucket:FirstKey()
+> - desc: returns the first key
+> - returns: Key: `String`
+> - args: Offset: `Number`
+> - note: you can offset it up
+> <br>
+
+> ## Bucket:LastKey()
+> - desc: returns the last key
+> - returns: Key: `String`
+> - args: Offset: `Number`
+> - note: you can offset it down
+> <br>
+
+> ## Bucket:FirstEntry()
+> - desc: returns the first entry
+> - returns: Entry: `Table`
+> - args: Offset: `Number`
+> - note: you can offset it up
+> <br>
+
+> ## Bucket:LastEntry()
+> - desc: returns the last entry
+> - returns: Entry: `Table`
+> - args: Offset: `Number`
+> - note: you can offset it down
 > <br>
 
 > ## Bucket:Push()
