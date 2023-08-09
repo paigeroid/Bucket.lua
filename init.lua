@@ -730,6 +730,19 @@ end
 
 
 
+--< Entries >--
+function Bucket:Entries()
+	local ents = {}
+
+	for i, v in pairs(self) do
+		table.insert(ents, v)
+	end
+
+	return Bucket.new(ents)
+end
+
+
+
 --< IndexOf >--
 function Bucket:IndexOf(Key)
 	for i, v in pairs(self) do
