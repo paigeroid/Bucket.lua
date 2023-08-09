@@ -1001,4 +1001,21 @@ end
 
 
 
+--< ForBack >--
+function Bucket:ForBack(func)
+	local stuff = Bucket.new()
+	
+	for i, v in pairs(self) do
+		local thing = func(v.Key, v.Value, i, v.Type)
+		
+		if thing then
+			stuff:Push(thing)
+		end
+	end
+	
+	return stuff
+end
+
+
+
 return Bucket
