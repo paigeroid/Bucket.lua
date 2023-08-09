@@ -824,7 +824,7 @@ function Bucket:HasVal(...)
 	
 	for _, Value in pairs(args) do
 		for i, v in pairs(self) do
-			if v.Value == Key then
+			if v.Value == Value then
 				return true
 			end
 		end
