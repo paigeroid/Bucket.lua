@@ -1031,4 +1031,19 @@ end
 
 
 
+--< Map >--
+function Bucket:Map(func)
+	local clone = self:Clone()
+	
+	clone:ForEach(function(k, v, i, t)
+		local thing = func(k, v, i, t)
+		
+		clone:SetAt(i, thing)
+	end)
+	
+	return clone
+end
+
+
+
 return Bucket
