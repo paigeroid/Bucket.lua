@@ -65,6 +65,40 @@ end
 
 
 
+--< From >--
+function Bucket.from(array)
+
+	-- create the new thing
+	local self = setmetatable( {}, Bucket )
+	local length = 0
+
+	if array then
+		for i, v in pairs(array) do
+			local stuff
+			local vl = 0
+			local str = tostring(v)
+
+			if type(v) == "table" then for _ in pairs(v) do vl = vl + 1 end end
+			
+			
+			stuff = {
+				Key = i,
+				Value = v,
+				Type = "pair"
+			}
+			
+
+			self[length+1] = stuff
+
+			length = length + 1
+		end
+	end
+
+	return self
+end
+
+
+
 --< Length >--
 function Bucket:Length()
 	local length = 0
@@ -969,6 +1003,20 @@ end
 
 
 
+--< Dump >--
+function Bucket:Dump()
+	local thing = {}
+	
+	self:ForEach(function(k, v)
+		thing[k] = v
+	end)
+	
+
+	return thing
+end
+
+
+
 --< Clone >--
 function Bucket:Clone()
 	return Bucket.new( self:Pour() )
@@ -1017,15 +1065,15 @@ end
 --< ForBack >--
 function Bucket:ForBack(func)
 	local stuff = Bucket.new()
-	
+
 	for i, v in pairs(self) do
 		local thing = func(v.Key, v.Value, i, v.Type)
-		
+
 		if thing then
 			stuff:Push(thing)
 		end
 	end
-	
+
 	return stuff
 end
 
@@ -1034,13 +1082,13 @@ end
 --< Map >--
 function Bucket:Map(func)
 	local clone = self:Clone()
-	
+
 	clone:ForEach(function(k, v, i, t)
 		local thing = func(k, v, i, t)
-		
+
 		clone:SetAt(i, thing)
 	end)
-	
+
 	return clone
 end
 
