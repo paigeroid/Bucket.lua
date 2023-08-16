@@ -1125,6 +1125,21 @@ end
 
 
 
+--< Map >--
+function Bucket:MapKeys(func)
+	local clone = self:Clone()
+
+	clone:ForEach(function(k, v, i, t)
+		local thing = func(k, v, i, t)
+
+		clone:RenameAt(i, thing)
+	end)
+
+	return clone
+end
+
+
+
 --< Is >--
 function Bucket.is(tbl)
     local str = tostring(tbl)
@@ -1144,7 +1159,7 @@ function Bucket:Merge(...)
             v0:ForEach(function(k1, v1, i, t)
                 if t == "uni" then
                     clone:Push(v1)
-                else
+                else 
                     clone:Push({ [k1] = v1 })
                 end
             end)
@@ -1154,7 +1169,7 @@ function Bucket:Merge(...)
             v0:ForEach(function(k1, v1, i, t)
                 if t == "uni" then
                     clone:Push(v1)
-                else
+                else 
                     clone:Push({ [k1] = v1 })
                 end
             end)
@@ -1213,6 +1228,82 @@ function Bucket:Sort(func)
     end)
     
     return strings:Merge(numbers)
+end
+
+
+
+--< ToLowerCase >--
+function Bucket:ToLowerCase(...)
+    local clone = self:Clone()
+    local args = Bucket.new({...})
+    
+    clone = clone:Map(function(k, v, i, t)
+        if args:Length() > 0 then
+            if args:Has(i) and type(v) == "string" then
+                return v:lower()
+            else
+                return v
+            end
+        elseif type(v) == "string" then
+            return v:lower()
+        else
+            return v
+        end
+    end)
+
+    clone = clone:MapKeys(function(k, v, i, t)
+        if args:Length() > 0 then
+            if args:Has(i) and type(k) == "string" then
+                return k:lower()
+            else
+                return k
+            end
+        elseif type(k) == "string" then
+            return k:lower()
+        else
+            return k
+        end
+    end)
+
+    return clone
+end
+
+
+
+--< ToUpperCase >--
+function Bucket:ToUpperCase(...)
+    local clone = self:Clone()
+    local args = Bucket.new({...})
+    
+    clone = clone:Map(function(k, v, i, t)
+        if args:Length() > 0 then
+            if args:Has(i) and type(v) == "string" then
+                return v:upper()
+            else
+                return v
+            end
+        elseif type(v) == "string" then
+            return v:upper()
+        else
+            return v
+        end
+    end)
+
+    clone = clone:MapKeys(function(k, v, i, t)
+        if args:Length() > 0 then
+            if args:Has(i) and type(k) == "string" then
+                return k:upper()
+            else
+                return k
+            end
+        elseif type(k) == "string" then
+            return k:upper()
+        else
+            return k
+        end
+    end)
+
+    return clone
 end
 
 
