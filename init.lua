@@ -1141,11 +1141,27 @@ function Bucket:Merge(...)
     
     args:ForEach(function(k0, v0)
         if Bucket.is(v0) then
-            v0:ForEach(function(k1, v1, i1, t1)
-                
+            v0:ForEach(function(k1, v1, i, t)
+                if t == "uni" then
+                    clone:Push(v1)
+                else
+                    clone:Push({ [k1] = v1 })
+                end
+            end)
+        elseif type(v0) == "table" then
+            v0 = Bucket.new(v0)
+            
+            v0:ForEach(function(k1, v1, i, t)
+                if t == "uni" then
+                    clone:Push(v1)
+                else
+                    clone:Push({ [k1] = v1 })
+                end
             end)
         end
     end)
+
+    return clone
 end
 
 
@@ -1196,16 +1212,9 @@ function Bucket:Sort(func)
         return func(aValue, bValue)
     end)
     
-    return strings, numbers
+    return strings:Merge(numbers)
 end
 
 
-local bkt = Bucket.new({
-   2, "b", "a", 1, 10, 5
-})
 
-print(bkt:Sort(function(a, b)
-    return a > b
-end))
-
-
+return Bucket
