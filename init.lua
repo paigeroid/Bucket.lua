@@ -99,6 +99,37 @@ end
 
 
 
+--< Split >--
+function Bucket.split(string, splitter)
+
+	-- create the new thing
+	local self = setmetatable( {}, Bucket )
+	local length = 1
+	
+	if splitter == nil then
+        splitter = "%s"
+	end
+
+	for str in string.gmatch(string, "([^"..splitter.."]+)") do
+		local stuff
+			
+		stuff = {
+			Key = length,
+			Value = str,
+			Type = "pair"
+		}
+			
+
+		self[length] = stuff
+
+		length = length + 1
+	end
+
+	return self
+end
+
+
+
 --< Length >--
 function Bucket:Length()
 	local length = 0
@@ -1094,4 +1125,87 @@ end
 
 
 
-return Bucket
+--< Is >--
+function Bucket.is(tbl)
+    local str = tostring(tbl)
+    
+    return string.sub(str,1,string.len("(("))=="(("
+end
+
+
+
+--< Merge >--
+function Bucket:Merge(...)
+    local clone = self:Clone()
+    local args = Bucket.new({...})
+    
+    args:ForEach(function(k0, v0)
+        if Bucket.is(v0) then
+            v0:ForEach(function(k1, v1, i1, t1)
+                
+            end)
+        end
+    end)
+end
+
+
+
+--< Sort >--
+function Bucket:Sort(func)
+    local new = Bucket.new()
+    
+    if not func then
+        func = function(a, b)
+            return a < b
+        end
+    end
+
+
+    local strings = self:Filter(function(k, v, i, t)
+        if t == "uni" and type(v) == "string" then return true
+        elseif t == "pair" and type(k) == "string" then return true
+        else return false end
+    end)
+    
+    local numbers = self:Filter(function(k, v, i, t)
+        if t == "uni" and type(v) == "number" then return true
+        elseif t == "pair" and type(k) == "number" then return true
+        else return false end
+    end)
+    
+    
+    table.sort(strings, function(a, b)
+        local aValue, bValue
+        
+        if a.Type == "uni" then aValue = a.Value
+        else aValue = a.Key end
+        if b.Type == "uni" then bValue = b.Value
+        else bValue = b.Key end
+        
+        return func(aValue, bValue)
+    end)
+    
+    table.sort(numbers, function(a, b)
+        local aValue, bValue
+        
+        if a.Type == "uni" then aValue = a.Value
+        else aValue = a.Key end
+        if b.Type == "uni" then bValue = b.Value
+        else bValue = b.Key end
+        
+        return func(aValue, bValue)
+    end)
+    
+    return strings, numbers
+end
+
+
+local bkt = Bucket.new({
+   2, "b", "a", 1, 10, 5
+})
+
+print(bkt:Sort(function(a, b)
+    return a > b
+end))
+
+
