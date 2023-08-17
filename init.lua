@@ -1251,20 +1251,6 @@ function Bucket:ToLowerCase(...)
         end
     end)
 
-    clone = clone:MapKeys(function(k, v, i, t)
-        if args:Length() > 0 then
-            if args:Has(i) and type(k) == "string" then
-                return k:lower()
-            else
-                return k
-            end
-        elseif type(k) == "string" then
-            return k:lower()
-        else
-            return k
-        end
-    end)
-
     return clone
 end
 
@@ -1286,20 +1272,6 @@ function Bucket:ToUpperCase(...)
             return v:upper()
         else
             return v
-        end
-    end)
-
-    clone = clone:MapKeys(function(k, v, i, t)
-        if args:Length() > 0 then
-            if args:Has(i) and type(k) == "string" then
-                return k:upper()
-            else
-                return k
-            end
-        elseif type(k) == "string" then
-            return k:upper()
-        else
-            return k
         end
     end)
 
