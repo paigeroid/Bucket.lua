@@ -536,24 +536,6 @@ function Bucket:Del(Key)
 end
 
 
---< DelDNU >--
-function Bucket:DelDNU(Key)
-	for i, v in pairs(self) do
-		if v.Type == "pair" then
-			if v.Key == Key then
-				table.remove(self, i)
-				break
-			end
-		else
-			if v.Value == Key then
-				table.remove(self, i)
-				break
-			end
-		end
-	end
-end
-
-
 
 --< DelVal >--
 function Bucket:DelVal(Value)
@@ -569,18 +551,6 @@ end
 
 
 
---< DelValDNU >--
-function Bucket:DelValDNU(Value)
-	for i, v in pairs(self) do
-		if v.Value == Value then
-			table.remove(self, i)
-			break
-		end
-	end
-end
-
-
-
 --< DelAt >--
 function Bucket:DelAt(Index)
 	for i, v in pairs(self) do
@@ -591,18 +561,6 @@ function Bucket:DelAt(Index)
 	end
 
 	self:Update()
-end
-
-
-
---< DelAtDNU >--
-function Bucket:DelAtDNU(Index)
-	for i, v in pairs(self) do
-		if i == Index then
-			table.remove(self, Index)
-			break
-		end
-	end
 end
 
 
