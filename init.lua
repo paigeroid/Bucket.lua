@@ -1067,7 +1067,7 @@ function Bucket:Filter(func)
 				thing:Push({ [v.Key] = v.Value })
 			end
 		end
-	end
+    end
 
 	return thing
 end
@@ -1159,7 +1159,7 @@ function Bucket:Merge(...)
             v0:ForEach(function(k1, v1, i, t)
                 if t == "uni" then
                     clone:Push(v1)
-                else 
+                else
                     clone:Push({ [k1] = v1 })
                 end
             end)
@@ -1169,7 +1169,7 @@ function Bucket:Merge(...)
             v0:ForEach(function(k1, v1, i, t)
                 if t == "uni" then
                     clone:Push(v1)
-                else 
+                else
                     clone:Push({ [k1] = v1 })
                 end
             end)
@@ -1304,6 +1304,92 @@ function Bucket:ToUpperCase(...)
     end)
 
     return clone
+end
+
+
+
+--< Replace >--
+function Bucket:Replace(x, y)
+	local clone = self:Clone()
+	
+	for i, v in pairs(clone) do
+		if type(v.Key) == "string" then
+			local r = v.Key:gsub(x, y)
+			clone:RenameAt(i, r)
+		end
+		
+		if type(v.Value) == "string" then
+			local r = v.Value:gsub(x, y)
+			clone:SetAt(i, r)
+		end
+	end
+	
+	return clone
+end
+
+
+
+--< ReplaceKeys >--
+function Bucket:ReplaceKeys(x, y)
+	local clone = self:Clone()
+	
+	for i, v in pairs(clone) do
+		if type(v.Key) == "string" then
+			local r = v.Key:gsub(x, y)
+			clone:RenameAt(i, r)
+		end
+	end
+	
+	return clone
+end
+
+
+
+--< ReplaceValues >--
+function Bucket:ReplaceValues(x, y)
+	local clone = self:Clone()
+	
+	for i, v in pairs(clone) do
+		if type(v.Value) == "string" then
+			local r = v.Value:gsub(x, y)
+			clone:SetAt(i, r)
+		end
+	end
+	
+	return clone
+end
+
+
+
+--< SortBy >--
+function Bucket:SortBy(tbl, func)
+	local clone = self:Clone()
+	
+	if not func then
+        func = function(a, b)
+            return a < b
+        end
+	end
+	
+	local stuff = Bucket.new()
+	
+	if not Bucket.is(tbl) then
+	    tbl = Bucket.new(tbl)
+	end
+	
+	tbl:Sort(function(a, b)
+		stuff:Push( func(a, b) )
+		return func(a, b)
+	end)
+	
+	local i = 1
+	
+	return clone:Sort(function()
+		local thing = stuff:At(i)
+		i = i+1
+		
+		return thing
+	end)
 end
 
 
