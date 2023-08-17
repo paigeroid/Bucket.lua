@@ -1346,7 +1346,7 @@ end
 
 
 --< ReplaceValues >--
-function Bucket:ReplaceValues(x, y)
+function Bucket:ReplaceVals(x, y)
 	local clone = self:Clone()
 	
 	for i, v in pairs(clone) do
