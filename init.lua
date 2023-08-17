@@ -65,8 +65,8 @@ end
 
 
 
---< From >--
-function Bucket.from(array)
+--< Raw >--
+function Bucket.raw(array)
 
 	-- create the new thing
 	local self = setmetatable( {}, Bucket )
