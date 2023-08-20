@@ -69,4 +69,21 @@ bkt:IndexOf("a") -- 1
 bkt:IndexOf("b") -- 2
 ```
 for string stuff there's a unique syntax for it:
-- (( )) =
+- (( )) = start and end of the bucket
+- ( ) = another bucket
+- { } = a table
+- [  ] = a pair
+- \* = a key
+
+pairs are represented like this
+```lua
+[ *key => value ]
+```
+tables are represented like this
+```lua
+{ Table (lx) }
+```
+other buckets are represented like this
+```lua
+( Bucket (lx) )
+```
